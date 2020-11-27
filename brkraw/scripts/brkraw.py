@@ -363,7 +363,7 @@ def main():
                         subj_code = 'sub-{}'.format(subj_id)
 
                         for i, row in filtered_dset.iterrows():
-                            if multi_session:
+                            if multi_session or force:
                                 # If multi-session, make session dir
                                 sess_code = 'ses-{}'.format(row.SessID)
                                 subj_path = os.path.join(root_path, subj_code)
