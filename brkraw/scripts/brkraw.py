@@ -77,6 +77,7 @@ def main():
     bids_convert.add_argument("--ignore-offset", help='remove offset value from header', action='store_true')
     bids_convert.add_argument("--ignore-rescale", help='remove slope and offset values from header',
                               action='store_true')
+    bids_convert.add_argument("--force-ses", help='force ses tag in name', action="store_true")
 
     args = parser.parse_args()
 
@@ -309,12 +310,13 @@ def main():
         path = args.input
         datasheet = args.datasheet
         output = args.output
+        force = args.force_ses
         df = pd.read_excel(datasheet, dtype={'SubjID': str, 'SessID': str, 'run': str})
         json_fname = args.json
         slope, offset = set_rescale(args)
 
         # check if the project is multi-session
-        if all(pd.isnull(df['SessID'])):
+        if all(pd.isnull(df['SessID'])) and not force:
             # SessID was removed
             multi_session = False
         else:
